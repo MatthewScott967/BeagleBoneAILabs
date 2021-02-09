@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pin Muxing Detangled</title>
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+    <h1>BeagleBone AI Labs Pin Muxing Detangled</h1>
+    <h3>Search By Header Pin</h3>
+    <form action="javascript:void(0);" method="GET" onsubmit="searchByHeaderPin()">
+        <input type="text" id="header-pin" placeholder="P8.1">
+        <input type="submit" value="Search">
+    </form>
+
+    <h3>Search By Signal Name</h3>
+    <form action="javascript:void(0);" method="GET" onsubmit="searchBySignalName()">
+        <input type="text" id="signal-name" placeholder="xxx">
+        <input type="submit" value="Search">
+    </form>
+    
+    <h3>Pin Info</h3>
+    <table>
+        <tr>
+            <th>Header Pin</th>
+            <th>ARM Pin</th>
+            <th>Register Address</th>
+            <th>Default Mode</th>
+            <th>Mode 0</th>
+            <th>Mode 1</th>
+            <th>Mode 2</th>
+            <th>Mode 3</th>
+            <th>Mode 4</th>
+            <th>Mode 5</th>
+            <th>Mode 6</th>
+            <th>Mode 7</th>
+            <th>Mode 8</th>
+            <th>Mode 9</th>
+            <th>Mode 10</th>
+            <th>Mode 11</th>
+            <th>Mode 12</th>
+            <th>Mode 13</th>
+            <th>Mode 14</th>
+            <th>Mode 15</th>
+        </tr>
+        <tbody id="pins"></tbody>
+    </table>
+
+    <script src="js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        getItems();
+    </script>
+</body>
+</html>

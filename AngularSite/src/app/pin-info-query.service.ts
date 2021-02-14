@@ -10,76 +10,44 @@ import { PinInfoItem } from './pin-info-item';
 })
 export class PinInfoQueryService 
 {
-    queryResults: Array<PinInfoItem> = [];
     queryParameter: string = "";
 
     private pinInfoItemUrl = 'https://localhost:5001/api/PinInfoItems';
+
+    httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
+    };
 
     constructor(private http: HttpClient) 
     {
     }
 
-    getPinInfoQueryResults(): PinInfoItem[] 
+    performPinInfoQueryAll() : Observable<PinInfoItem[]>
     {
-        return this.queryResults;
+        const url = `${this.pinInfoItemUrl}`;
+         
+        return this.http.get<PinInfoItem[]>(url)
+            .pipe(catchError(this.handleError<PinInfoItem[]>('getPinInfoQueryResults', [])));
     }
 
-    performPinInfoQuery(queryString: string) : void
+    performPinInfoQuery(queryString: string) : Observable<PinInfoItem[]>
     {
         this.queryParameter = queryString;
 
-        // const url = `${this.pinInfoItemUrl}?pinName=${this.queryParameter}`;
-        // 
-        // return this.http.get<PinInfoItem[]>(url)
-        //    .pipe(catchError(this.handleError<PinInfoItem[]>('getPinInfoQueryResults', [])));
+        const url = `${this.pinInfoItemUrl}?pinName=${this.queryParameter}`;
+         
+        return this.http.get<PinInfoItem[]>(url)
+            .pipe(catchError(this.handleError<PinInfoItem[]>('getPinInfoQueryResults', [])));
+    }
 
-        this.queryResults[0] = 
-        {
-            pin : "sysboot 0",
-            address : "0x1400",
-            armPin : "M6",
-            defaultMode : 0,
-            mode00Signal : "gpmc_ad0",
-            mode01Signal : "",
-            mode02Signal : "vin3a_d0",
-            mode03Signal : "vout3_d0",
-            mode04Signal : "",
-            mode05Signal : "",
-            mode06Signal : "",
-            mode07Signal : "",
-            mode08Signal : "",
-            mode09Signal : "",
-            mode10Signal : "",
-            mode11Signal : "",
-            mode12Signal : "",
-            mode13Signal : "",
-            mode14Signal : "gpio1_6",
-            mode15Signal : "sysboot0"
-        };
+    performPinInfoSignalQuery(queryString: string) : Observable<PinInfoItem[]>
+    {
+        this.queryParameter = queryString;
 
-        this.queryResults[1] = 
-        {
-            pin : "sysboot 1",
-            address : "0x1404",
-            armPin : "M7",
-            defaultMode : 0,
-            mode00Signal : "gpmc_ad0",
-            mode01Signal : "",
-            mode02Signal : "vin3a_d0",
-            mode03Signal : "vout3_d0",
-            mode04Signal : "",
-            mode05Signal : "",
-            mode06Signal : "",
-            mode07Signal : "",
-            mode08Signal : "",
-            mode09Signal : "",
-            mode10Signal : "",
-            mode11Signal : "",
-            mode12Signal : "",
-            mode13Signal : "",
-            mode14Signal : "gpio1_6",
-            mode15Signal : "sysboot0"
-        };
+        const url = `${this.pinInfoItemUrl}?signalName=${this.queryParameter}`;
+         
+        return this.http.get<PinInfoItem[]>(url)
+            .pipe(catchError(this.handleError<PinInfoItem[]>('getPinInfoQueryResults', [])));
     }
 
     private handleError<T>(operation = 'operation', result?: T) 

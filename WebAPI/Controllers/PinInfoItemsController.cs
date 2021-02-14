@@ -30,36 +30,31 @@ namespace BBAILabsWebSite.Controllers
 
             if (!String.IsNullOrEmpty(pinName))
             {
-                string pinNameA = $"{pinName}a";
-                string pinNameB = $"{pinName}b";
-                
-                pinInfoItems = pinInfoItems.Where(p => p.Id == pinName || 
-                    p.Id == pinNameA || 
-                    p.Id == pinNameB);
-                pinInfoItems = pinInfoItems.OrderBy(p => p.Id);
+                pinInfoItems = pinInfoItems.Where(p => p.Id.Contains(pinName, StringComparison.CurrentCultureIgnoreCase));
+                pinInfoItems = pinInfoItems.OrderBy(p => p.RegisterAddress);
             }
 
             else if (!String.IsNullOrEmpty(signalName))
             {
                 pinInfoItems = pinInfoItems.Where(p => 
-                    p.Mode00Signal.Contains(signalName) ||
-                    p.Mode01Signal.Contains(signalName) ||
-                    p.Mode02Signal.Contains(signalName) ||
-                    p.Mode03Signal.Contains(signalName) ||
-                    p.Mode04Signal.Contains(signalName) ||
-                    p.Mode05Signal.Contains(signalName) ||
-                    p.Mode06Signal.Contains(signalName) ||
-                    p.Mode07Signal.Contains(signalName) ||
-                    p.Mode08Signal.Contains(signalName) ||
-                    p.Mode09Signal.Contains(signalName) ||
-                    p.Mode10Signal.Contains(signalName) ||
-                    p.Mode11Signal.Contains(signalName) ||
-                    p.Mode12Signal.Contains(signalName) ||
-                    p.Mode13Signal.Contains(signalName) ||
-                    p.Mode14Signal.Contains(signalName) ||
-                    p.Mode15Signal.Contains(signalName));
+                    p.Mode00Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode01Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode02Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode03Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode04Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode05Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode06Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode07Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode08Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode09Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode10Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode11Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode12Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode13Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode14Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.Mode15Signal.Contains(signalName, StringComparison.CurrentCultureIgnoreCase));
 
-                pinInfoItems = pinInfoItems.OrderBy(p => p.Id);
+                pinInfoItems = pinInfoItems.OrderBy(p => p.RegisterAddress);
             }
 
             return await pinInfoItems.ToListAsync();

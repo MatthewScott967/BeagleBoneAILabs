@@ -1,8 +1,8 @@
 export interface PinInfoItem 
 {
-    pin: string;
+    id: string;
     armPin: string;
-    address: string;
+    registerAddress: string;
     defaultMode: number;
     mode00Signal: string;
     mode01Signal: string;

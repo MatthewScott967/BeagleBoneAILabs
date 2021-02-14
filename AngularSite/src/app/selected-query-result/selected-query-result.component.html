@@ -1,10 +1,24 @@
 <div *ngIf="selectedPin">
 
-    <h2>{{selectedPin.pin | uppercase}} Details</h2>
-    <div><span>pin: </span>{{selectedPin.pin}}</div>
-    <div>
-        <label>address:
-            <input [(ngModel)]="selectedPin.address" placeholder="name"/>
-        </label>
-    </div>
+    <h2>Details For BeagleBone AI Pin: {{selectedPin.id | uppercase}}</h2>
+    <div><span>BeagleBone AI Pin: </span>{{selectedPin.id}}</div>
+    <div><label>AM5729 Pin: {{selectedPin.armPin}}</label></div>
+    <div><label>Register Address: {{selectedPin.registerAddress}}</label></div>
+    <div><label>Default Mode: {{selectedPin.defaultMode}}</label></div>
+    <div><label>Mode 0: {{selectedPin.mode00Signal}}</label></div>
+    <div><label>Mode 1: {{selectedPin.mode01Signal}}</label></div>
+    <div><label>Mode 2: {{selectedPin.mode02Signal}}</label></div>
+    <div><label>Mode 3: {{selectedPin.mode03Signal}}</label></div>
+    <div><label>Mode 4: {{selectedPin.mode04Signal}}</label></div>
+    <div><label>Mode 5: {{selectedPin.mode05Signal}}</label></div>
+    <div><label>Mode 6: {{selectedPin.mode06Signal}}</label></div>
+    <div><label>Mode 7: {{selectedPin.mode07Signal}}</label></div>
+    <div><label>Mode 8: {{selectedPin.mode08Signal}}</label></div>
+    <div><label>Mode 9: {{selectedPin.mode09Signal}}</label></div>
+    <div><label>Mode 10: {{selectedPin.mode10Signal}}</label></div>
+    <div><label>Mode 11: {{selectedPin.mode11Signal}}</label></div>
+    <div><label>Mode 12: {{selectedPin.mode12Signal}}</label></div>
+    <div><label>Mode 13: {{selectedPin.mode13Signal}}</label></div>
+    <div><label>Mode 14: {{selectedPin.mode14Signal}}</label></div>
+    <div><label>Mode 15: {{selectedPin.mode15Signal}}</label></div>
 </div>

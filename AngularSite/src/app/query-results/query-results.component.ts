@@ -1,6 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PinInfoQueryService } from '../pin-info-query.service';
 import { PinInfoItem } from '../pin-info-item';
+import { Injectable } from '@angular/core';
+
+@Injectable({
+    providedIn: 'root'
+})
 
 @Component({
     selector: 'app-query-results',
@@ -21,7 +26,6 @@ export class QueryResultsComponent implements OnInit
 
     ngOnInit(): void 
     {
-        this.displayQueryResults();
     }
 
     onSelect(pinInfoItem: PinInfoItem): void 
@@ -29,8 +33,17 @@ export class QueryResultsComponent implements OnInit
         this.selectedResult = pinInfoItem;
     }
 
-    displayQueryResults(): void 
+    displayQueryResults(queryResults: PinInfoItem[]): void 
     {
-        this.queryResults = this.pinInfoQueryService.getPinInfoQueryResults();
+        this.queryResults = queryResults;
+
+        if (this.queryResults.length > 0)
+        {
+            this.selectedResult = this.queryResults[0];
+        }
+        else
+        {
+            this.selectedResult = undefined;
+        }
     }
 }

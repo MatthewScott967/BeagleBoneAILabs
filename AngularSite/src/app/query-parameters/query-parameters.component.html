@@ -1,0 +1,16 @@
+<h2>Search By Expansion Header Pin</h2>
+<div>
+    <label>Header Pin:
+        <input [(ngModel)]="queryPin" placeholder="P8.1"/>
+        <button (click)="onClick(queryPin)">Search</button>
+    </label>
+</div>
+<h2>Search By Signal Name</h2>
+<div>
+    <label>Pin Signal:
+        <input [(ngModel)]="querySignal" placeholder="gpio"/>
+        <button (click)="onClick(querySignal)">Search</button>
+    </label>
+</div>
+
+<app-query-results [queryParameter]="queryParameter"></app-query-results>

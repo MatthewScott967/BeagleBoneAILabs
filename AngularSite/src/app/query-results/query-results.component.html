@@ -1,0 +1,14 @@
+<div *ngIf="queryParameter">
+
+    <app-selected-query-result [selectedPin]="selectedResult"></app-selected-query-result>
+
+    <h2>{{queryParameter}} Query Reults</h2>
+
+    <ul class="query-results">
+        <li *ngFor="let pinInfoItem of queryResults" 
+            (click)="onSelect(pinInfoItem)"
+            [class.selected]="pinInfoItem === selectedResult">
+            <span class="badge">{{pinInfoItem.pin}}</span> {{pinInfoItem.armPin}} {{pinInfoItem.address}} {{pinInfoItem.defaultMode}}
+        </li>
+    </ul>
+</div>

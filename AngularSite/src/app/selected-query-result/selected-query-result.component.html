@@ -1,0 +1,10 @@
+<div *ngIf="selectedPin">
+
+    <h2>{{selectedPin.pin | uppercase}} Details</h2>
+    <div><span>pin: </span>{{selectedPin.pin}}</div>
+    <div>
+        <label>address:
+            <input [(ngModel)]="selectedPin.address" placeholder="name"/>
+        </label>
+    </div>
+</div>

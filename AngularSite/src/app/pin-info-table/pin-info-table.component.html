@@ -1,0 +1,34 @@
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>BB AI Pin Name</th>
+      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="armPin">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>AM5729 Pin</th>
+      <td mat-cell *matCellDef="let row">{{row.armPin}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="registerAddress">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Register Address</th>
+      <td mat-cell *matCellDef="let row">{{row.registerAddress}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="defaultMode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Default Mode</th>
+      <td mat-cell *matCellDef="let row">{{row.defaultMode}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data?.length"
+      [pageIndex]="0"
+      [pageSize]="15"
+      [pageSizeOptions]="[15, 25, 50, 100, 200]">
+  </mat-paginator>
+</div>

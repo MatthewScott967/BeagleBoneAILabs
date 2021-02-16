@@ -1,16 +1,71 @@
-<h2>Search By BealgeBone AI Pin</h2>
-<div>
-    <label>BB AI Pin Name:
-        <input [(ngModel)]="queryPin" placeholder="P8.1"/>
-        <button (click)="pinSearch(queryPin)">Search</button>
-    </label>
-</div>
-<h2>Search By AM5729 Signal Name</h2>
-<div>
-    <label>AM5729 Signal Name:
-        <input [(ngModel)]="querySignal" placeholder="gpio"/>
-        <button (click)="signalSearch(querySignal)">Search</button>
-    </label>
-</div>
+<mat-card>
 
-<app-query-results [queryParameter]="queryParameter"></app-query-results>
+    <mat-card-header>
+        <mat-card-title>Search</mat-card-title>
+        <mat-card-subtitle>Enter seach criteria</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form>
+            <mat-form-field>
+                <mat-label>BB AI Pin Name</mat-label>
+
+                <input type="text"
+                    placeholder="P8.1"
+                    aria-label="BB AI Pin Name:"
+                    matInput
+                    [formControl]="pinControl"
+                    [matAutocomplete]="autoPin"
+                    #searchPin>
+
+                <mat-autocomplete #autoPin="matAutocomplete">
+                    <mat-option *ngFor="let pinOption of filteredPinOptions | async" [value]="pinOption">
+                        {{pinOption}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="pinSearch(searchPin.value)">Search By Pin</button>
+
+        </form>
+
+        <form>
+            <mat-form-field>
+                <mat-label>AM5729 Signal Name</mat-label>
+
+                <input type="text"
+                    placeholder="gpio"
+                    aria-label="AM5729 Signal Name:"
+                    matInput
+                    [formControl]="signalControl"
+                    [matAutocomplete]="autoSignal"
+                    #searchSignal>
+
+                <mat-autocomplete #autoSignal="matAutocomplete">
+                    <mat-option *ngFor="let signalOption of filteredSignalOptions | async" [value]="signalOption">
+                        {{signalOption}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="pinSearch(searchSignal.value)">Search By Signal</button>
+        </form>
+    </mat-card-content>
+
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Search Results</mat-card-title>
+        <mat-card-subtitle>Search Term: {{queryParameter | uppercase}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <app-pin-info-table></app-pin-info-table>
+    </mat-card-content>
+
+</mat-card>
+
+<mat-card>
+    <app-query-results [queryParameter]="queryParameter"></app-query-results>
+</mat-card>

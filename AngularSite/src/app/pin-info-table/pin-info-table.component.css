@@ -1,4 +1,14 @@
 .full-width-table {
   width: 100%;
 }
+.mat-row.hovered {
+  background: #ede7f6;
+}
 
+.mat-row.highlighted {
+  background: #673ab7;
+}
+
+.mat-cell.highlighted {
+  color: white;
+}

@@ -1,6 +1,4 @@
-<div *ngIf="selectedPin">
-
-    <h2>Details For BeagleBone AI Pin: {{selectedPin.id | uppercase}}</h2>
+<div class="mat-elevation-z8" *ngIf="selectedPin">
     <div><span>BeagleBone AI Pin: </span>{{selectedPin.id}}</div>
     <div><label>AM5729 Pin: {{selectedPin.armPin}}</label></div>
     <div><label>Register Address: {{selectedPin.registerAddress}}</label></div>

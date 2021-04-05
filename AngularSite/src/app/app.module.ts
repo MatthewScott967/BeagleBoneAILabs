@@ -4,8 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { QueryResultsComponent } from './query-results/query-results.component';
-import { QueryParametersComponent } from './query-parameters/query-parameters.component';
+import { QueryParametersComponent } from './query-parameters/query-parameters.component'
 import { SelectedQueryResultComponent } from './selected-query-result/selected-query-result.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PinInfoTableComponent } from './pin-info-table/pin-info-table.component';
@@ -46,10 +45,11 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @NgModule({
   declarations: [
     AppComponent,
-    QueryResultsComponent,
     QueryParametersComponent,
     SelectedQueryResultComponent,
     PinInfoTableComponent
@@ -95,6 +95,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    FlexLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

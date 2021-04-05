@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PinInfoQueryService } from '../pin-info-query.service';
 import { ViewChild } from '@angular/core';
-import { QueryResultsComponent } from '../query-results/query-results.component'
 import { PinInfoTableComponent } from '../pin-info-table/pin-info-table.component'
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -20,9 +19,6 @@ export class QueryParametersComponent implements OnInit
     
     queryParameter?: string;
 
-    @ViewChild(QueryResultsComponent)
-    private queryResultsComponent?: QueryResultsComponent;
-
     @ViewChild(PinInfoTableComponent)
     private pinInfoTableComponent?: PinInfoTableComponent;
 
@@ -33,6 +29,8 @@ export class QueryParametersComponent implements OnInit
     signalControl = new FormControl();
     signalOptions: string[] = [];
     filteredSignalOptions: Observable<string[]>;
+
+    public selectedPinInTable: PinInfoItem;
 
     constructor(private pinInfoQueryService: PinInfoQueryService)
     {
@@ -60,12 +58,6 @@ export class QueryParametersComponent implements OnInit
         this.pinInfoQueryService.performPinInfoQueryAll()
             .subscribe(pinInfoItems => 
             {
-                if (this.queryResultsComponent)
-                {
-                    this.queryParameter = "ALL"
-                    this.queryResultsComponent.displayQueryResults(pinInfoItems); 
-                }
-
                 if (this.pinInfoTableComponent)
                 {
                     this.pinInfoTableComponent.displayQueryResults(pinInfoItems);
@@ -87,10 +79,6 @@ export class QueryParametersComponent implements OnInit
         this.pinInfoQueryService.performPinInfoQuery(queryPin)
             .subscribe(pinInfoItems => 
             {
-                if (this.queryResultsComponent)
-                {
-                    this.queryResultsComponent.displayQueryResults(pinInfoItems); 
-                }
                 if (this.pinInfoTableComponent)
                 {
                     this.pinInfoTableComponent.displayQueryResults(pinInfoItems);
@@ -110,15 +98,16 @@ export class QueryParametersComponent implements OnInit
         this.pinInfoQueryService.performPinInfoSignalQuery(querySignal)
             .subscribe(pinInfoItems => 
             {
-                if (this.queryResultsComponent)
-                {
-                    this.queryResultsComponent.displayQueryResults(pinInfoItems); 
-                }
                 if (this.pinInfoTableComponent)
                 {
                     this.pinInfoTableComponent.displayQueryResults(pinInfoItems);
                 }
             });
+    }
+
+    updateSelectionInTable(pin: PinInfoItem) : void
+    {
+        this.selectedPinInTable = pin;
     }
 
     private _updateAutoCompleteOptions(pinInfoItems: PinInfoItem[]) : void

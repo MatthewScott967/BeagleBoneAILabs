@@ -1,59 +1,70 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Search</mat-card-title>
-        <mat-card-subtitle>Enter seach criteria</mat-card-subtitle>
-    </mat-card-header>
+<div fxLayout="row" fxLayoutAlign="space-between none">
+    <div fxFlex="33">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Search</mat-card-title>
+                <mat-card-subtitle>Enter seach criteria</mat-card-subtitle>
+            </mat-card-header>
 
-    <mat-card-content>
-        <form>
-            <mat-form-field>
-                <mat-label>BB AI Pin Name</mat-label>
+            <mat-card-content>
+                <form>
+                    <mat-form-field>
+                        <mat-label>BB AI Pin Name</mat-label>
+                        <input type="text"
+                            placeholder="P8.1"
+                            aria-label="BB AI Pin Name:"
+                            matInput
+                            [formControl]="pinControl"
+                            [matAutocomplete]="autoPin"
+                            #searchPin>
+                        <mat-autocomplete #autoPin="matAutocomplete">
+                            <mat-option *ngFor="let pinOption of filteredPinOptions | async" [value]="pinOption">
+                                {{pinOption}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="pinSearch(searchPin.value)">Search By Pin</button>
+                </form>
 
-                <input type="text"
-                    placeholder="P8.1"
-                    aria-label="BB AI Pin Name:"
-                    matInput
-                    [formControl]="pinControl"
-                    [matAutocomplete]="autoPin"
-                    #searchPin>
+                <form>
+                    <mat-form-field>
+                        <mat-label>AM5729 Signal Name</mat-label>
 
-                <mat-autocomplete #autoPin="matAutocomplete">
-                    <mat-option *ngFor="let pinOption of filteredPinOptions | async" [value]="pinOption">
-                        {{pinOption}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
+                        <input type="text"
+                            placeholder="gpio"
+                            aria-label="AM5729 Signal Name:"
+                            matInput
+                            [formControl]="signalControl"
+                            [matAutocomplete]="autoSignal"
+                            #searchSignal>
+                        <mat-autocomplete #autoSignal="matAutocomplete">
+                            <mat-option *ngFor="let signalOption of filteredSignalOptions | async" [value]="signalOption">
+                                {{signalOption}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="signalSearch(searchSignal.value)">Search By Signal</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div> 
+    <div *ngIf="selectedPinInTable" fxFlex="67">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Details For Selected Pin</mat-card-title>
+                <mat-card-subtitle>{{selectedPinInTable.id | uppercase}}</mat-card-subtitle>
+            </mat-card-header>
 
-            <button mat-raised-button color="primary" (click)="pinSearch(searchPin.value)">Search By Pin</button>
+            <mat-card-content>
+                <app-selected-query-result [selectedPin]="selectedPinInTable"></app-selected-query-result>
+            </mat-card-content>
+        </mat-card>
+    </div>
 
-        </form>
+</div>
 
-        <form>
-            <mat-form-field>
-                <mat-label>AM5729 Signal Name</mat-label>
-
-                <input type="text"
-                    placeholder="gpio"
-                    aria-label="AM5729 Signal Name:"
-                    matInput
-                    [formControl]="signalControl"
-                    [matAutocomplete]="autoSignal"
-                    #searchSignal>
-
-                <mat-autocomplete #autoSignal="matAutocomplete">
-                    <mat-option *ngFor="let signalOption of filteredSignalOptions | async" [value]="signalOption">
-                        {{signalOption}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <button mat-raised-button color="primary" (click)="signalSearch(searchSignal.value)">Search By Signal</button>
-        </form>
-    </mat-card-content>
-</mat-card>
-
-<div fxLayout="col" fxLayoutGap="5px" fxLayoutAlign="space-between start">
-    <div fxFlex="1 1 70%">
+<div fxLayout="row" fxLayoutAlign="space-between none">
+    <div fxFill>
         <mat-card>
             <mat-card-header>
                 <mat-card-title>Search Results</mat-card-title>
@@ -62,18 +73,6 @@
 
             <mat-card-content>
                 <app-pin-info-table (updateSelection)="updateSelectionInTable($event)"></app-pin-info-table>
-            </mat-card-content>
-        </mat-card>
-    </div>
-
-    <div fxFlex>
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>Details For Selected Pin</mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content>
-                <app-selected-query-result [selectedPin]="selectedPinInTable"></app-selected-query-result>
             </mat-card-content>
         </mat-card>
     </div>

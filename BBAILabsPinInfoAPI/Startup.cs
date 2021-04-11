@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,9 +10,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 using Newtonsoft.Json;
-using BBAILabsWebSite.Models;
+using BBAILabsPinInfoAPI.Models;
 
-namespace BBAILabsWebSite
+namespace BBAILabsPinInfoAPI
 {
     public class Startup
     {
@@ -62,7 +64,7 @@ namespace BBAILabsWebSite
             // seed the database from json file
 
             string jsonString = System.IO.File.ReadAllText(@"pininfo.json");
-            
+
             if (!String.IsNullOrEmpty(jsonString))
             {
                 List<PinInfoItem> pinInfoItems = JsonConvert.DeserializeObject<List<PinInfoItem>>(jsonString);

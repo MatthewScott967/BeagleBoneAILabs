@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "AngularSite": {
+    "BBAILabsWebsite": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/AngularSite",
+            "outputPath": "dist/BBAILabsWebsite",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -66,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "AngularSite:build"
+            "browserTarget": "BBAILabsWebsite:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "AngularSite:build:production"
+              "browserTarget": "BBAILabsWebsite:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "AngularSite:build"
+            "browserTarget": "BBAILabsWebsite:build"
           }
         },
         "test": {
@@ -115,16 +115,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "AngularSite:serve"
+            "devServerTarget": "BBAILabsWebsite:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "AngularSite:serve:production"
+              "devServerTarget": "BBAILabsWebsite:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "AngularSite"
+  "defaultProject": "BBAILabsWebsite"
 }

@@ -1,4 +1,4 @@
-namespace BBAILabsWebSite.Models
+namespace BBAILabsPinInfoAPI.Models
 {
     public class PinInfoItem
     {

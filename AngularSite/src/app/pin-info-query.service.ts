@@ -12,7 +12,7 @@ export class PinInfoQueryService
 {
     queryParameter: string = "";
 
-    private pinInfoItemUrl = 'https://localhost:5001/api/PinInfoItems';
+    private pinInfoItemUrl = 'http://localhost:5000/api/PinInfoItems';
 
     httpOptions = {
         headers: new HttpHeaders({'Content-Type': 'application/json'})

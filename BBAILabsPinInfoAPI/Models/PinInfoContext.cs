@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace BBAILabsWebSite.Models
+namespace BBAILabsPinInfoAPI.Models
 {
     public class PinInfoContext : DbContext
     {

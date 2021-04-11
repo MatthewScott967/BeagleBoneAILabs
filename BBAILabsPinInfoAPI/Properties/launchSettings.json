@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BBAILabsWebSite": {
+    "BBAILabsPinInfoAPI": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

@@ -1,0 +1,12 @@
+# directories
+**/bin/
+**/obj/
+**/out/
+**/wwwroot/
+.git
+
+# files
+Dockerfile*
+**/*.md
+make_pininfo.pl
+.gitignore

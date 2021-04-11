@@ -1,0 +1,16 @@
+services:
+  web:
+    image: matthewscott967/bbailabs_website
+    ports:
+        - "4200:80"
+    build:
+      context: AngularSite/
+      dockerfile: Dockerfile
+
+  api:
+    image: matthewscott967/pininfo_api
+    ports:
+        - "5000:80"
+    build:
+      context: BBAILabsPinInfoAPI/
+      dockerfile: Dockerfile

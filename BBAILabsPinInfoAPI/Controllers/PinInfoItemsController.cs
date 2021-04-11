@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BBAILabsWebSite.Models;
+using BBAILabsPinInfoAPI.Models;
 
-namespace BBAILabsWebSite.Controllers
+namespace BBAILabsPinInfoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

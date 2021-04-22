@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +30,7 @@ namespace BBAILabsPinInfoAPI
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200");
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); 
                     });
             });
 
@@ -49,8 +48,6 @@ namespace BBAILabsPinInfoAPI
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseCors();

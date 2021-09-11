@@ -2,12 +2,16 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { QueryParametersComponent } from './query-parameters/query-parameters.component'
 import { SelectedQueryResultComponent } from './selected-query-result/selected-query-result.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PinInfoTableComponent } from './pin-info-table/pin-info-table.component';
+
+import { Lab1SetupComponent } from './lab1-setup/lab1-setup.component';
+import { Lab2PinmuxComponent } from './lab2-pinmux/lab2-pinmux.component';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -46,13 +50,25 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PinmuxToolComponent } from './pinmux-tool/pinmux-tool.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AboutPageComponent } from './about-page/about-page.component';
+import { LinksPageComponent } from './links-page/links-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QueryParametersComponent,
     SelectedQueryResultComponent,
-    PinInfoTableComponent
+    PinInfoTableComponent,
+    Lab1SetupComponent,
+    Lab2PinmuxComponent,
+    PinmuxToolComponent,
+    HomePageComponent,
+    PageNotFoundComponent,
+    AboutPageComponent,
+    LinksPageComponent
   ],
   imports: [
     BrowserModule,
@@ -96,6 +112,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatTooltipModule,
     MatTreeModule,
     FlexLayoutModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

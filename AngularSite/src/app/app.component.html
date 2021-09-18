@@ -1,37 +1,37 @@
-<p>
-    <mat-toolbar color="primary">
-        <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Labs Menu" aria-label="Labs Menu">
-            
-            <mat-icon>menu</mat-icon>
+<mat-toolbar class="app-toolbar mat-elevation-z8" color="primary">
+    <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Labs Menu" aria-label="Labs Menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    
+    <mat-menu #menu="matMenu">
+
+        <button mat-menu-item routerLink="home-page">
+            <span>Home</span>
         </button>
-        
-        <mat-menu #menu="matMenu">
-
-            <button mat-menu-item routerLink="/lab1-setup">
-                <span>Lab 1: Setup</span>
-            </button>
-            <button mat-menu-item routerLink="/lab2-pinmux">
-                <span>Lab 2: Pin Muxing</span>
-            </button>
-
-        </mat-menu>
-
-        <span>{{title}}</span>
-
-        <span class="toolbar-spacer"></span>
-
-        <button mat-icon-button matTooltip="Home" routerLink="home-page" aria-label="Home">
-            <mat-icon>home</mat-icon>
+        <button mat-menu-item routerLink="/lab1-setup">
+            <span>Lab 1: Setup</span>
+        </button>
+        <button mat-menu-item routerLink="/lab2-pinmux">
+            <span>Lab 2: Pin Muxing</span>
         </button>
 
-        <button mat-icon-button matTooltip="Important Links" routerLink="links-page" aria-label="Links">
-            <mat-icon>link</mat-icon>
-        </button>
+    </mat-menu>
 
-        <button mat-icon-button matTooltip="About" routerLink="about-page" aria-label="About">
-            <mat-icon>info</mat-icon>
-        </button>
-    </mat-toolbar>
-</p>
+    <span>{{title}}</span>
+    
+    <span class="toolbar-spacer"></span>
+
+    <button mat-icon-button matTooltip="Home" routerLink="home-page" aria-label="Home">
+        <mat-icon>home</mat-icon>
+    </button>
+
+    <button mat-icon-button matTooltip="Important Links" routerLink="links-page" aria-label="Links">
+        <mat-icon>link</mat-icon>
+    </button>
+
+    <button mat-icon-button matTooltip="About" routerLink="about-page" aria-label="About">
+        <mat-icon>info</mat-icon>
+    </button>
+</mat-toolbar>
 
 <router-outlet></router-outlet>

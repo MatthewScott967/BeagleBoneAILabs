@@ -1,0 +1,24 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: auto;
+    margin-top: 64px;
+    overflow-y: visible;
+}
+
+.home-page-card {
+    max-width: 900px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.lab1-avitar-image {
+    background-image: url(src/assets/icons/lab1setup.png);
+    background-size: cover;
+}
+
+.lab2-avitar-image {
+    background-image: url(src/assets/icons/lab2pinmuxing.png);
+    background-size: cover;
+}

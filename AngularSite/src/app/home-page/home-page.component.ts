@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
+  title = 'Welcome To Beagle Bone AI Labs';
+
   constructor() { }
 
   ngOnInit(): void {

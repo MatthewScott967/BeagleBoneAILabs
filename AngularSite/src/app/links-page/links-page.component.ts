@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LinksPageComponent implements OnInit {
 
+  title = 'Important Links';
+
   constructor() { }
 
   ngOnInit(): void {

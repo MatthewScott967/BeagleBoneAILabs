@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+  margin-top: 64px;
+  overflow-y: visible;
+}
+
+.lab1-main-container {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.lab1-nav-panel {  
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 56px);
+  width: 240px;
+  overflow: auto;
+}
+
+.lab1-main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

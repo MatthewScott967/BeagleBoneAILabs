@@ -1,0 +1,8 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: auto;
+    margin-top: 64px;
+    overflow-y: visible;
+  }

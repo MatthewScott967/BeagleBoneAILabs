@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PinmuxToolComponent implements OnInit {
 
-  title = 'Pin Mux Tool';
+  title = 'Pin Mux Search Tool';
 
   constructor() { }
 

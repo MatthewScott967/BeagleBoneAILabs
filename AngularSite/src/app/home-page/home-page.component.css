@@ -7,6 +7,11 @@
     overflow-y: visible;
 }
 
+.home-content {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 .home-page-card {
     max-width: 900px;
     margin-top: 10px;

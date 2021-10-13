@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { PinInfoQueryService } from '../pin-info-query.service';
 import { ViewChild } from '@angular/core';
 import { PinInfoTableComponent } from '../pin-info-table/pin-info-table.component'
+import { AppComponent } from '../app.component'
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -12,7 +13,7 @@ import { PinInfoItem } from '../pin-info-item';
     templateUrl: './query-parameters.component.html',
     styleUrls: ['./query-parameters.component.css']
 })
-export class QueryParametersComponent implements OnInit 
+export class QueryParametersComponent implements OnInit, AfterViewInit
 {
     queryPin: string = "";
     querySignal: string = "";
@@ -32,11 +33,21 @@ export class QueryParametersComponent implements OnInit
 
     public selectedPinInTable: PinInfoItem;
 
-    constructor(private pinInfoQueryService: PinInfoQueryService)
+    constructor(private pinInfoQueryService: PinInfoQueryService, private app: AppComponent)
     {
     }
 
     ngOnInit(): void 
+    {
+    }
+
+    ngAfterViewInit() {
+        setTimeout(() => {
+          this.InitialQueryAll();
+        }, 1);
+      }
+
+    InitialQueryAll()
     {
         this.getAllPinInfoItems();
 
@@ -55,8 +66,11 @@ export class QueryParametersComponent implements OnInit
 
     getAllPinInfoItems(): void
     {
+        this.app.showProgressBar();
+
         this.pinInfoQueryService.performPinInfoQueryAll()
-            .subscribe(pinInfoItems => 
+            .subscribe(
+            pinInfoItems => 
             {
                 if (this.pinInfoTableComponent)
                 {
@@ -64,6 +78,14 @@ export class QueryParametersComponent implements OnInit
                 }
 
                 this._updateAutoCompleteOptions(pinInfoItems);
+            },
+            err => 
+            {
+                console.log("getAllPinInfoItems failed: " + err);
+            },
+            () =>
+            {
+                this.app.hideProgressBar();
             });
     }
 
@@ -75,14 +97,24 @@ export class QueryParametersComponent implements OnInit
             return;
         }
 
+        this.app.showProgressBar();
+
         this.queryParameter = queryPin;
-        this.pinInfoQueryService.performPinInfoQuery(queryPin)
-            .subscribe(pinInfoItems => 
+        this.pinInfoQueryService.performPinInfoQuery(queryPin).subscribe(
+            pinInfoItems => 
             {
                 if (this.pinInfoTableComponent)
                 {
                     this.pinInfoTableComponent.displayQueryResults(pinInfoItems);
                 }
+            },
+            err => 
+            {
+                console.log("pinSearch failed: " + err);
+            },
+            () =>
+            {
+                this.app.hideProgressBar();
             });
     }
 
@@ -94,14 +126,24 @@ export class QueryParametersComponent implements OnInit
             return;
         }
 
+        this.app.showProgressBar();
+
         this.queryParameter = querySignal;
-        this.pinInfoQueryService.performPinInfoSignalQuery(querySignal)
-            .subscribe(pinInfoItems => 
+        this.pinInfoQueryService.performPinInfoSignalQuery(querySignal).subscribe(
+            pinInfoItems => 
             {
                 if (this.pinInfoTableComponent)
                 {
                     this.pinInfoTableComponent.displayQueryResults(pinInfoItems);
                 }
+            },
+            err => 
+            {
+                console.log("signalSearch failed: " + err);
+            },
+            () =>
+            {
+                this.app.hideProgressBar();
             });
     }
 

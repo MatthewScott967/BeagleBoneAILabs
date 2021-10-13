@@ -1,8 +1,8 @@
+x-aws-loadbalancer: arn:aws:elasticloadbalancing:us-east-1:020773916720:loadbalancer/net/BBAI-LABS-LB/6a1770fc71b1f558
 services:
   bbailabs-website:
     image: matthewscott967/bbailabs_website
-    networks:
-        - bbailabs
+
     ports:
         - "80:80"
     depends_on:
@@ -13,14 +13,9 @@ services:
 
   pininfo-api:
     image: matthewscott967/pininfo_api
-    networks:
-        - bbailabs
+
     ports:
         - "5000:5000"
     build:
       context: BBAILabsPinInfoAPI/
       dockerfile: Dockerfile
-
-networks:
-  bbailabs:
-    driver: bridge 

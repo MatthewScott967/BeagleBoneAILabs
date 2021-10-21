@@ -16,11 +16,6 @@
       <td mat-cell *matCellDef="let row" [ngClass]="{highlighted: selection.isSelected(row)}">{{row.registerAddress}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="defaultMode">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Default Mode</th>
-      <td mat-cell *matCellDef="let row" [ngClass]="{highlighted: selection.isSelected(row)}">{{row.defaultMode}}</td>
-    </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let pin; columns: displayedColumns;"
       (click)="onSelect(pin)" 
@@ -33,7 +28,7 @@
   <mat-paginator #paginator
       [length]="dataSource?.data?.length"
       [pageIndex]="0"
-      [pageSize]="15"
-      [pageSizeOptions]="[15, 25, 50, 100, 200]">
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20, 30]">
   </mat-paginator>
 </div>

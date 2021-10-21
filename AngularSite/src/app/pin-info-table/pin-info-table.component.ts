@@ -22,7 +22,7 @@ export class PinInfoTableComponent implements AfterViewInit, OnInit
     selection = new SelectionModel<PinInfoItem>(false, []);
 
     /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-    displayedColumns = ['id', 'armPin', 'registerAddress', 'defaultMode'];
+    displayedColumns = ['id', 'armPin', 'registerAddress'];
 
     ngOnInit() 
     {

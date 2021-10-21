@@ -24,28 +24,56 @@
                 <h2 id="Overview">Overview</h2>
 
                 <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                So you just bought the new Beagle Board AI SBC and you want to start doing 
+                cool things with it.  Of course the first thing you need to do is go through 
+                a "Getting Started" guide that talks about getting Linux installed / updated 
+                and how to get access to your new computer.
                 </p>
 
                 <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                However, once you get that done, you want to start programming something.  
+                A typical embedded systems "hello world" application is to connect and LED to 
+                your hardware and then write a program to blink it on and off.  When this 
+                document was written, the Beagle Bone AI had just came out and while there 
+                were plenty of documents on how to blink an LED connected to other Beagle 
+                Bone SBC's, there was not really an easy reference for how to do that on 
+                the Beagle Bone AI, and it was even worse if you wanted to do this on one 
+                of the embedded PRU processors.
                 </p>
 
                 <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Some day it will be easier, right now for the Beagle Bone Black that is Adafruit 
+                Python BB IO Library and there is also BeagleBone Black I/O (GPIO) Library for C 
+                and there are many others, including bonescript, etc, etc.  However, because the 
+                Beagle Bone AI is a generation beyond the Beagle Bone Black, none of these current 
+                systems can help you.  Again, some day it will be different, but in many ways, this 
+                can be a good thing, because now you can really dig into what is going on in the 
+                GPIO / Pinmuxing systems.  Then when things are easier, you will actually know what 
+                is going on under the covers.                    
                 </p>
+
+                <p>
+                One of the main barriers to the LED Blinking task being sample is "pin muxing" or 
+                pin multiplexing.  You want to connect an LED to one of the expansion headers 
+                (P8 / P9) but it is near impossible to understand what expansion header pin to 
+                connect the LED to and how to drive that pin from you sample code.
+                </p>
+
+                <p>
+                So, this document explains in detail what is going on and why it is so complex to 
+                set a signal high in software and know what expansion pin has just turned on.
+                </p>
+
+                <p>
+                Progression to full understanding of the issues will proceed in this order
+                </p>
+
+                <ul>
+                    <li>What AM572x internal signals are connected to AM752x external pins</li>
+                    <li>What AM572x external pins are connected to the BB AI P8/P9 headers</li>
+                    <li>How to turn on signal from software</li>
+                    <li>How to select which of the multiple AM572x internal signals, connected to a single AM752x external pins, is active.</li>
+                </ul>                
 
                 <h2 id="console-setup">Console Setup</h2>
                 <p>

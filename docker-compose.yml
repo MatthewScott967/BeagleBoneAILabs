@@ -1,4 +1,4 @@
-x-aws-loadbalancer: arn:aws:elasticloadbalancing:us-east-1:020773916720:loadbalancer/net/BBAI-LABS-LB/6a1770fc71b1f558
+x-aws-loadbalancer: arn:aws:elasticloadbalancing:us-east-1:020773916720:loadbalancer/net/BBAI-LABS-WEB-LB/72c486ad243568be
 services:
   bbailabs-website:
     image: matthewscott967/bbailabs_website

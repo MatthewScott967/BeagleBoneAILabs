@@ -3,16 +3,19 @@
         <mat-toolbar color="primary">
             {{title}}
         </mat-toolbar>
-    
+
         <div class="lab2-main-container">
 
             <div class="lab2-nav-panel">
                 <mat-nav-list>
                     <a mat-list-item routerLink="." fragment="Overview">Overview</a>
-                    <a mat-list-item routerLink="." fragment="console-setup">Console Setup</a>
-                    <a mat-list-item routerLink="." fragment="network-setup">Network Setup</a>
-                    <a mat-list-item routerLink="." fragment="vim-setup">VIM Setup</a>
-                    <mat-divider></mat-divider>
+                    <a mat-list-item routerLink="." fragment="ti-am572x">AM572X Sitara Processor</a>
+                    <a mat-list-item routerLink="." fragment="bb-headers">Beagle Board AI P8 and P9 Headers</a>
+                    <a mat-list-item routerLink="." fragment="software">Time To Write Software</a>
+                    <a mat-list-item routerLink="." fragment="from-pru">Flashing LED from PRU</a>
+                    <a mat-list-item routerLink="." fragment="not-default">Signal is not default</a>
+                    <a mat-list-item routerLink="." fragment="device-tree">Using Linux Device Trees</a>
+                  <mat-divider></mat-divider>
                     <a mat-list-item routerLink="/pinmux-tool">Pin Mux Search Tool</a>
                 </mat-nav-list>
             </div>
@@ -21,127 +24,873 @@
 
             <div class="lab2-main-content">
 
-                <h2 id="Overview">Overview</h2>
+              <h2 id="Overview">Overview</h2>
 
-                <p>
-                So you just bought the new Beagle Board AI SBC and you want to start doing 
-                cool things with it.  Of course the first thing you need to do is go through 
-                a "Getting Started" guide that talks about getting Linux installed / updated 
-                and how to get access to your new computer.
-                </p>
+              <p>
+              So you just bought the new Beagle Board AI SBC and you want to start doing
+              cool things with it.  Of course the first thing you need to do is go through
+              a "Getting Started" guide that talks about getting Linux installed / updated
+              and how to get access to your new computer.
+              </p>
 
-                <p>
-                However, once you get that done, you want to start programming something.  
-                A typical embedded systems "hello world" application is to connect and LED to 
-                your hardware and then write a program to blink it on and off.  When this 
-                document was written, the Beagle Bone AI had just came out and while there 
-                were plenty of documents on how to blink an LED connected to other Beagle 
-                Bone SBC's, there was not really an easy reference for how to do that on 
-                the Beagle Bone AI, and it was even worse if you wanted to do this on one 
-                of the embedded PRU processors.
-                </p>
+              <p>
+              However, once you get that done, you want to start programming something.
+              A typical embedded systems "hello world" application is to connect and LED to
+              your hardware and then write a program to blink it on and off.  When this
+              document was written, the Beagle Bone AI had just came out and while there
+              were plenty of documents on how to blink an LED connected to other Beagle
+              Bone SBC's, there was not really an easy reference for how to do that on
+              the Beagle Bone AI, and it was even worse if you wanted to do this on one
+              of the embedded PRU processors.
+              </p>
 
-                <p>
-                Some day it will be easier, right now for the Beagle Bone Black that is Adafruit 
-                Python BB IO Library and there is also BeagleBone Black I/O (GPIO) Library for C 
-                and there are many others, including bonescript, etc, etc.  However, because the 
-                Beagle Bone AI is a generation beyond the Beagle Bone Black, none of these current 
-                systems can help you.  Again, some day it will be different, but in many ways, this 
-                can be a good thing, because now you can really dig into what is going on in the 
-                GPIO / Pinmuxing systems.  Then when things are easier, you will actually know what 
-                is going on under the covers.                    
-                </p>
+              <p>
+              Some day it will be easier, right now for the Beagle Bone Black that is Adafruit
+              Python BB IO Library and there is also BeagleBone Black I/O (GPIO) Library for C
+              and there are many others, including bonescript, etc, etc.  However, because the
+              Beagle Bone AI is a generation beyond the Beagle Bone Black, none of these current
+              systems can help you.  Again, some day it will be different, but in many ways, this
+              can be a good thing, because now you can really dig into what is going on in the
+              GPIO / Pinmuxing systems.  Then when things are easier, you will actually know what
+              is going on under the covers.
+              </p>
 
-                <p>
-                One of the main barriers to the LED Blinking task being sample is "pin muxing" or 
-                pin multiplexing.  You want to connect an LED to one of the expansion headers 
-                (P8 / P9) but it is near impossible to understand what expansion header pin to 
-                connect the LED to and how to drive that pin from you sample code.
-                </p>
+              <p>
+              One of the main barriers to the LED Blinking task being sample is "pin muxing" or
+              pin multiplexing.  You want to connect an LED to one of the expansion headers
+              (P8 / P9) but it is near impossible to understand what expansion header pin to
+              connect the LED to and how to drive that pin from you sample code.
+              </p>
 
-                <p>
-                So, this document explains in detail what is going on and why it is so complex to 
-                set a signal high in software and know what expansion pin has just turned on.
-                </p>
+              <p>
+              So, this document explains in detail what is going on and why it is so complex to
+              set a signal high in software and know what expansion pin has just turned on.
+              </p>
 
-                <p>
-                Progression to full understanding of the issues will proceed in this order
-                </p>
+              <p>
+              Progression to full understanding of the issues will proceed in this order
+              </p>
 
-                <ul>
-                    <li>What AM572x internal signals are connected to AM752x external pins</li>
-                    <li>What AM572x external pins are connected to the BB AI P8/P9 headers</li>
-                    <li>How to turn on signal from software</li>
-                    <li>How to select which of the multiple AM572x internal signals, connected to a single AM752x external pins, is active.</li>
-                </ul>                
+              <ul>
+                  <li>What AM572x internal signals are connected to AM752x external pins</li>
+                  <li>What AM572x external pins are connected to the BB AI P8/P9 headers</li>
+                  <li>How to turn on signal from software</li>
+                  <li>How to select which of the multiple AM572x internal signals, connected to a single AM752x external pins, is active.</li>
+              </ul>
 
-                <h2 id="console-setup">Console Setup</h2>
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <h2 id="ti-am572x">AM572X Sitara Processor</h2>
 
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <p>
+              To start this journey, the first step is to understand how all of the various
+              AM572X internal signal lines map to the physical external pins (called balls for
+              the type of physical packaging that Sitara processor uses).
+              </p>
 
-                <h2 id="network-setup">Network Setup</h2>
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <p>
+              For instance, if the processor generates an output video signal, how does the
+              display output signals get from internal signals to an external HDMI (or other)
+              video connector?
+              </p>
 
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <p>
+              For our example of blinking an LED, we will eventually get to the fact that the
+              software will be using GPIO signals to control the LED.  For now, just
+              understanding what chip signals map to what chip pin is enough.
+              </p>
 
-                <h2 id="vim-setup">VIM Setup</h2>
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <p>
+              Generating a signal in software and knowing what it connected to on a Beagle
+              Board AI would be significantly easier if there was a 1:1 mapping of internal
+              signal to physical pins on the chip.  However, this is not even close to
+              realistic and there are way more possible internal signals than there are on
+              any reasonable chip packaging.  Furthermore, based on what the chip is being
+              used for, many of the internal signals are never even used.
+              </p>
 
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-            
-                <h2 id="tips-tricks">Tips & Tricks</h2>
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <p>
+              So, each ball (pin) will have one, and likely many more, internal signals mapped to it.  Only one of the signals mapped to a pin can be used and which of the many possible signals mapped to each pin is actually selected is what is referred to as pin muxing.
+              </p>
 
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut l
-                abore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+              <p>
+              This brings up back to... the first step in blinking an external LED from software on a Beagle Bona AI is to understand what signals are mapped to which physical ball.
+              </p>
+
+              <h3>Chip Balls (Pins)</h3>
+
+              AM572X Sitara Processors Silicon Revision 2.0 Data Sheet Figure 4-1 shows the ball locations for the 760 plastic ball grid array (PBGA) package.  Rows A - AH and columns 1 - 28.  A ball's name is row, followed by column.  For example G20 or AC17.
+
+              <img src="assets/images/Screen_Shot_2020-11-26_at_3.53.18_PM.png" alt="" width="600">
+
+              <h3>What Signals are possible on each ball (pin)</h3>
+
+              We need to figure out what internal signals are available on each Sitara ball.  This data is provided by Texas Instruments in the AM572X Sitara Processors Silicon Revision 2.0 Data Sheet available here:
+
+              <ul>
+                <li>Online: <a href="https://www.ti.com/document-viewer/AM5729/datasheet">https://www.ti.com/document-viewer/AM5729/datasheet)</a></li>
+                <li>PDF: <a href="https://www.ti.com/lit/ds/symlink/am5729.pdf?ts=1606438819457">https://www.ti.com/lit/ds/symlink/am5729.pdf?ts=1606438819457</a></li>
+              </ul>
+
+              <p>
+                There are many ways to view this data.  Chapter 4 breaks the signal to ball mapping into many different tables.  All are very useful and which table to use depends on what information you have and what information you are looking for.  For example are you trying to figure out what signals are connect to a particular ball, or do you know what signal you need and you just want to know what ball it is connected to.
+              </p>
+
+              <p>
+                Here are some examples of the data available in the AM572X Sitara Processors Silicon Revision 2.0 Data Sheet
+              </p>
+
+              <b>Table 4-2. Ball Characteristics</b> defines defines the AM572X ball to possible signal name mapping.
+
+              Table 4-2 Sample:
+
+              <img src="assets/images/Screen_Shot_2020-11-26_at_3.43.47_PM.png" alt="" width="900">
+
+              <b>Table 4-3. Multiplexing Characteristics</b> is another view of the mapping that has memory address, register name and ball number to possible signal name mapping.
+
+              Table 4-3 Sample:
+
+              <img src="assets/images/Screen_Shot_2020-11-26_at_3.43.01_PM.png" alt="" width="900">
+
+              <b>Tables 4-4</b> though <b>4-34</b> map specific functional systems signal names together and what ball those signals map to.
+
+              <b>Table 4-23 GPOIs Signal Descriptions</b> is of particular interest for Beagle Bone AI programming as it provides the General-Purpose Interface (GPIO) signal descriptions.
+
+              Table 4-23 Sample:
+
+              <img src="assets/images/Screen_Shot_2020-11-26_at_4.15.39_PM.png" alt="" width="900">
+
+              <h3>Short detour to discuss GPIO (we will need this)</h3>
+
+              <p>
+                The GPIO system is General Purpose Input / Output and is basically an flexible, user-programmable and (mostly) unstructured electrical external connection (pin).  When an LED it plugged it, we can us output to turn it on and off.  When a switch is connected, we can figure out if it is on or off my using and input signal.  More sophisticated devices will implement some structured serial communication protocol, and for those, you can use the UART, USB, or other serial hardware, but for basic devices that don't "speak a serial protocol" GPIO is there.
+              </p>
+
+              <p>
+                Above, a portion of the table that maps GPIO signals AM5729 connection balls is presented.  Notice for instance, the gpio1_0 signal is connected to ball AD17.
+              </p>
+
+              <p>
+                The AM5729 has 8 banks of 32 GPIOs.  The signals used in the tables above use the nomenclature of gpio&lt;bank#&gt;_&lt;gpio##&gt;, so gpio1_0 used above means it it bank 1, GPIO 0 and gpio8_12 would be bank 8 gpio 12.  This is basically relative names, that is gpio 12 of bank 8.
+              </p>
+
+              <p>
+                GPIOs can also be referenced in absolute terms, the first bank of GPIO would be gpio0, gpio1, gpio2 ... gpio31.  Then the second bank would just continue that numbering, so the second bank would be gpio32, gpio33, gpio34 ... gpio63.
+              </p>
+
+              <h2 id="bb-headers">Beagle Board AI P8 and P9 Headers</h2>
+
+              <h3>So, where do I plug in the LED?</h3>
+
+              <p>
+                So, we now know what internal AM572X signals map to the external balls (pins), that
+                still doesn't help me know where to actually attach my LED that I want to blink.
+                The place to attach external electronics to the Beagle Board AI is through the P8
+                and P9 expansion headers.  The connection points (pins) here are designated
+                "header.pin" so P8.19 or P9.24.
+              </p>
+
+              <p>
+                However, we are back to the same problem that we have more AM5729 balls than the
+                P8/P9 have.  So, there is an explicit (not configurable) connection from a limited
+                set of the AM5729 balls to the P8/P9 expansion headers, with one small twist.
+              </p>
+
+              <p>
+              Some of the P8/P9 header pins are connected to 2 different AM5729 balls, in this case these header pins are often referred to as "header.pin[a|b]", so P8.27a or P9.42b.  For a header pin that has multiple connections, only one of the two AM5729 balls should be active.  That is to say, you choose which of the two balls drive the header pin, by ensuring the AM5729 has only one of the two active.
+              </p>
+              <p>
+              The BeagleBone AI System Reference Manual includes Section 7.1.1 Connector P8 ([https://github.com/beagleboard/beaglebone-ai/wiki/System-Reference-Manual#connector-p8](https://github.com/beagleboard/beaglebone-ai/wiki/System-Reference-Manual#connector-p8)) and 7.1.2 Connector P9 ([https://github.com/beagleboard/beaglebone-ai/wiki/System-Reference-Manual#connector-p9](https://github.com/beagleboard/beaglebone-ai/wiki/System-Reference-Manual#connector-p9)).
+              </p>
+              <p>
+              There are all kinds of really nicely laid out tables / images that show the P8 and P9 connections for the BeagleBone Black, but these same things do not exist for the Beagle Bone AI.  So, here are some attempts to make the header to AM5729 mapping clear.
+              </p>
+
+              <h3>P8 Header Pin Out</h3>
+
+              <img src="assets/images/Screen_Shot_2020-11-27_at_7.47.32_PM.png" alt="" width="900">
+
+              <h3>P9 Header Pin Out</h3>
+
+              <img src="assets/images/Screen_Shot_2020-11-27_at_7.48.05_PM.png" alt="" width="900">
+
+              <h3>Every P8 / P9 Header Pin and Mode Available</h3>
+
+              <p>
+              Unreadable, but this is all the info.  Need to setup up a webpage / make spreadsheet available so you can easily "browse" this information.
+              </p>
+              <img src="assets/images/Screen_Shot_2020-11-28_at_11.51.33_PM.png" alt="" width="900">
+
+              <p>
+              So, it doesn't really matter that much which of these pins to use, to plug in our LED, we just need one that is connected to the a GPIO signal.  So, for now, lets choose P9.15 to connect our LED to.  From the table above we can see that P9.15 is connect to ball AG4 on the AM5729 processor.  The table above also shows that that is the ONLY ball connected to P9.15 and that by default ball AG4 is connected to the gpio3_12 signal.  This was a good choice to start with, because we don't have to change the muxmode or worry that a second AM5729 ball being connect to P9.15.  We will deal with these cases later when we are dealing with software access to GPIO.
+              </p>
+
+              <h2 id="software">Time To Write Some Software</h2>
+
+              <h3>Great, I plugged in an LED.  How do I make it blink?</h3>
+
+              <p>
+              So, we have figured out that the Beagle Board P9.15 is connected to the AG4 ball of the AM5729 processor.  Furthermore, we understand that that ball (AG4) can be in any one of 15 muxmodes, but by default it is in the muxmode that connects gpio3_12 to AG4 (and thus, to P9.15).
+              </p>
+              <p>
+              This means from software, we want to figure out how to turn gpio3_12 on and off, to make our LED flash.  As a first step to an actual program to blink the light, there is a way to turn the LED on and off from the command line, and it is worth looking at that first, then we can write a program to do this for us.
+              </p>
+              <p>
+              If you look at the /sys/class/gpio directory it should have an entry for each of the GPIO controllers, and two special files export and unexport.
+              </p>
+
+<pre>
+  <code>
+    > cd /sys/class/gpio/
+    > ls
+    export     gpiochip128  gpiochip192  gpiochip32   gpiochip504  gpiochip96
+    gpiochip0  gpiochip160  gpiochip224  gpiochip496  gpiochip64   unexport
+    >
+  </code>
+</pre>
+
+              <p>
+              There may be other files listed, but for sure these will be there on the Beagle Bone AI.
+              </p>
+              <p>
+              As discussed above, gpio3_12 is one nomenclature for the gpio signals and how the signals are referenced in the TI manuals.
+              </p>
+              <p>
+              For this next part, however, we need to know the absolute GPIO number for gpio3_12.  Which in this case is bank = 3 and gpio 12, would be ((3 - 1) * 32) + 12 or 76, so the absolute GPIO we are looking for is gpio76.
+              </p>
+
+              <h3>Blinking LED from Command line</h3>
+
+              To test out the LED that we connected to P9.15 (gpio3_12 or gpio76) we can do the following, and the LED should come on and then when you issue the last command it will turn back off
+
+<pre>
+  <code>
+    > echo 76 > export
+    > ls
+    export  gpiochip0    gpiochip160  gpiochip224  gpiochip496  gpiochip64  unexport
+    gpio76  gpiochip128  gpiochip192  gpiochip32   gpiochip504  gpiochip96
+    > echo out > gpio76/direction
+    > cat gpio76/direction
+    out
+    > echo 1 > gpio76/value
+    > echo 0 > gpio76/value
+  </code>
+</pre>
+
+              Now that we know the LED is connected correctly and we know what GPIO to reference to turn it on and off, lets write a C program to blink our LED.
+
+              <h3>Blinking LED Method 1 - write to /sys/class/gpio</h3>
+
+              The above command line work is really just reading and writing to and from files.  So, method 1 of blinking our LED for a C program will just use basic file I/O calls to read and write from these files.  These examples are not trying to make general systems, they are only trying help understand how to interact with external connected devices.  Therefore many filenames and GPIO channels are simply hardcoded, so you can see a very simple example.
+
+              Method 1 for blinking LED from C code
+
+<pre>
+  <code>
+    #include &gt;stdio.h>
+    #include &gt;stdlib.h>
+    #include &gt;string.h>
+    #include &gt;unistd.h>
+    #include &gt;dirent.h>
+
+    static const char k_exportFilename[] = "/sys/class/gpio/export";
+
+    // Example is explictly accessing gpio3_12 or gpio76 which is
+    // connected P9.15 header
+    static const int k_gpioNum = 76;
+    static const char k_gpioDirectoryname[] = "/sys/class/gpio/gpio76";
+    static const char k_gpioValueFilename[] = "/sys/class/gpio/gpio76/value";
+    static const char k_gpioDirectionFilename[] = "/sys/class/gpio/gpio76/direction";
+
+    int main(int argc, char* argv[])
+    {{"{"}}
+      // Code to ensure /sys/class/gpio76 exists and that
+      // /sys/class/gpio76/direction is set to 'out' has
+      // been removed to keep this brief.
+
+      FILE* gpioValueFilehandle = fopen(k_gpioValueFilename, "w");
+
+      if (gpioValueFilehandle == NULL)
+      {{"{"}}
+        printf("could not open gpio value control files\n");
+        exit(1);
+      }
+
+      fseek(gpioValueFilehandle, 0, SEEK_SET);
+      fputs("0", gpioValueFilehandle);
+      fflush(gpioValueFilehandle);
+
+      for (int i=0; i<10; i++)
+      {{"{"}}
+        fputs("1", gpioValueFilehandle);
+        fflush(gpioValueFilehandle);
+
+        usleep(500000);
+
+        fputs("0", gpioValueFilehandle);
+        fflush(gpioValueFilehandle);
+
+        usleep(500000);
+      }
+    }
+  </code>
+</pre>
+
+              There is also a newer linux character device (/dev/gpiochip[n]) interface for using gpio in user-space programs, but using the sysfs (/sys/class/gpio) method is more straight forward and is useable from the command line.
+
+              <h3>Blinking LED Method 2 - mmap GPIO registers</h3>
+
+              The filesystem based method of accessing GPIO is convenient, but is really just a layer on writing directly to the registers that control the GPIO system.  The addresses of each of these registers is published in AM572x Sitara Processors Technical Reference Manual, section27.6.1 General-Purpose Interface Instance Summary
+
+              Table 27-16. Instance Summary
+
+              <img src="assets/images/Screen_Shot_2020-11-29_at_11.22.00_PM.png" alt="" width="900">
+
+              For each module there are GPIO_SETDATAOUT and GPIO_CLEARDATAOUT registers that will set and clear a GPIO bit.  The addresses for these registers for each GPIO module are given in AM572x Sitara Processors Technical Reference Manual.
+
+              Table 27-68. GPIO_CLEARDATAOUT
+
+              <img src="assets/images/Screen_Shot_2020-11-29_at_11.28.25_PM.png" alt="" width="900">
+
+              Table 27-70. GPIO_SETDATAOUT
+
+              <img src="assets/images/Screen_Shot_2020-11-29_at_11.28.41_PM.png" alt="" width="900">
+
+              Given that we now know the addresses of this GPIO registers, we can use C mmap, to write to these addresses and control the GPIO.  In this case, we are going to to continue to use gpio3_12, so we will want to set and clear bit 12 in gpio3 module's set and clear registers.
+
+              Now, directly reading and writing physical memory is not something a normal user level program should be able to do.  So, this code will have to be run as root.  The main reason to show this method is that it setups the next method which will do the same direct memory write method, but will do it from the PRU, which should and does have access to the GPIO registers.
+
+              Method 2 for blinking LED from C code
+
+<pre>
+  <code>
+    #include &gt;stdio.h>
+    #include &gt;stdlib.h>
+    #include &gt;unistd.h>
+    #include &gt;sys/mman.h>
+    #include &gt;stdint.h>
+    #include &gt;fcntl.h>
+
+    // Just hardcode the addresses of the two registers we need.
+    // Could clearly build a nice headerfile for getting to
+    // all gpio banks and registers.
+
+    static const uint32_t k_gpio3ModuleAddr = 0x48057000;
+    static const uint32_t k_gpioModuleSize = 408;
+
+    static const uint32_t k_clearDataOutOffset = 0x190 / 4;
+    static const uint32_t k_setDataOutOffset = 0x194 / 4;
+
+    static const uint32_t k_gpioPin12 = (0x1 << 12);
+
+    int main(int argc, char* argv[])
+    {{"{"}}
+      int memoryhandle;
+
+      volatile unsigned int *gpio3Module = NULL;
+      volatile unsigned int *clearDataOut = NULL;
+      volatile unsigned int *setDataOut = NULL;
+
+      memoryhandle = open("/dev/mem", O_RDWR);
+
+      if (memoryhandle < 0)
+      {{"{"}}
+        printf("Could not open /dev/mem\n");
+        exit(1);
+      }
+
+      //  Memory map the GPIO3 registers
+
+      gpio3Module = mmap(0, k_gpioModuleSize,
+          PROT_WRITE, MAP_SHARED,
+          memoryhandle, k_gpio3ModuleAddr);
+
+      clearDataOut = gpio3Module + k_clearDataOutOffset;
+      setDataOut = gpio3Module + k_setDataOutOffset;
+
+      if (clearDataOut == MAP_FAILED || setDataOut == MAP_FAILED)
+      {{"{"}}
+        printf("Could not memory map the gpio clear and set data registers\n");
+        exit(1);
+      }
+
+      for (int i=0; i<5; i++)
+      {{"{"}}
+        (*setDataOut) = k_gpioPin12;
+        usleep(500000);
+
+        (*clearDataOut) = k_gpioPin12;
+        usleep(500000);
+      }
+    }
+  </code>
+</pre>
+
+              <h2 id="from-pru">Now I want to flash the LED from the PRU</h2>
+
+              There are two ways to access GPIO from the PRU.  First, the PRU can access the GPIO registers and write to them, just like we did in Method 2 C program.  However, each PRU core also has access to what are called enhanced GPIO, that are specific PRU GPIO signals.
+
+              <h3>Blinking LED Method 3 - PRU share memory GPIO registers</h3>
+
+              Method 3 for flashing the LED is really the same method as Method 2, just done from the PRU.  This actually makes it much easier, because as an independent processor, the code running on the PRU has direct access to much of the system registers and shared memory.
+
+              So, really the PRU code is going to do the same thing, set GPIO ClearDataOu and SetDataOut registers for gpio76 (gpio3_12).  So, get the address of those two registers and set / clear bit 12 to flash LED.
+
+              Method 3 for blinking LED from C code
+
+<pre>
+  <code>
+    #include &lt;stdint.h>
+    #include &lt;stdio.h>
+    #include &lt;pru_cfg.h>
+    #include "resource_table_empty.h"
+
+    static uint32_t *k_gpio3ClearDataOut = (uint32_t *)0x48057190;
+    static uint32_t *k_gpio3SetDataOut = (uint32_t *)0x48057194;
+
+    static const uint32_t k_gpioPin12 = (0x1 << 12);
+
+    void main(void)
+    {{"{"}}
+      CT_CFG.SYSCFG_bit.STANDBY_INIT = 0x0;
+
+      while (1)
+      {{"{"}}
+        (*k_gpio3SetDataOut) = k_gpioPin12;
+        __delay_cycles(100000000); /* 500ms @ 200MHz */
+
+        (*k_gpio3ClearDataOut) = k_gpioPin12;
+        __delay_cycles(100000000); /* 500ms @ 200MHz */
+      }
+
+      __halt();
+    }
+  </code>
+</pre>
+
+              <h3>Blinking LED Method 4 - PRU Enhanced GPIO</h3>
+
+              To understand how to use the PRU enhanced GPIO, there are several important tables that need to be referenced from AM572x Sitara Processors Technical Reference Manual and AM572X Sitara Processors Silicon Revision 2.0 Data Sheet.
+
+              From AM572x Sitara Processors  Technical Reference Manual:
+
+              Table 30-530. PRU-ICSS1 I/O Signals
+
+              <img src="assets/images/Screen_Shot_2020-11-28_at_6.32.25_PM.png" alt="" width="900">
+
+              Table 30-531. PRU-ICSS2 I/O Signals
+
+              <img src="assets/images/Screen_Shot_2020-11-28_at_6.32.39_PM.png" alt="" width="900">
+
+              The above tables show that register R30 controls the enhanced GPIO output signals and that R31 controls the enhanced GPIO input signals.  So, bits 0 - 20 in R30 map directly to the enhanced gpo signal, that is bit 0 in R30 maps to gpo0 and bit 17 maps to gpo17.  The same is true for gpi and R31,  so bit 4 in R31 is gpi4.
+
+              From AM572X Sitara Processors Silicon Revision 2.0 Data Sheet
+
+              Sample from Table 4-26. PRU-ICSS Signal Descriptions
+
+              <img src="assets/images/Screen_Shot_2020-12-08_at_8.00.00_AM.png" alt="" width="900">
+
+              From these tables, we can figure out the enhanced GPIO signal names like pr1_pru0_gpo19 and pr1_pru1_gpi3.  The names of these signals are composed of which PRU unit (1 or 2), which PRU core (0 or 1), if it is input (gpi) or output (gpo) and finally, which enhanced GPIOs (0 - 20).
+              So pr1_pru0_gpo19 is PRU unit 1, PRU core 0, is output and is enhanced gpio 19.
+
+              Once we have the signal name, we can figure out what AM5729 processor ball it is connected to.  So for example pr1_pru1_gpo17 we can tell it is connected to B3.  However, as discussed earlier, this is just one of many signals that is connected to that pin.  We need to look at AM572X Sitara Processors Silicon Revision 2.0 Data Sheet, Table 4-3. Multiplexing Characteristics (discussed earlier) to figure out what MUXMODE is used to select pr1_pru1_gpo17 on ball B3.
+              Turns out the MUXMODE is always 11, 12 or 13 for selecting pru enhanced GPIO.  Specifically for B3 to select pr1_pru1_gpo17, we need to set B3 to mux mode 13 (0xD).
+
+              For this sample we will us pr1_pru1_gpo17 and pr1_pru1_gpo18.  So that means this program must run on PRU unit 1 PRU core 1.  These two internal signals are by default selected as the signal for B3 and B4 ball.  We will look at how to set the muxmode for signals that are not setup the way we want them by the default configuration.
+
+              We can also use the P8/P9 tables above to see that pr1_pru1_gpo17 (B3) is connected to BB AI header P8.26 and that pr1_pru_gpo18 is connected to BB AI header P8.16.  So for this example, those are the pins to connect LEDs to.
+
+              Method 4 is just going to directly set / clear bit 17 and bit 18 in the R30 register which drives the pr1_pru1_gpo17 and pr1_pru_gpo18 signals.
+
+              Method 4 for blinking LED from C code
+
+<pre>
+  <code>
+    #include &lt;stdint.h>
+    #include &lt;stdio.h>
+    #include &lt;pru_cfg.h>
+    #include "resource_table_empty.h"
+
+    volatile register uint32_t __R30;
+    volatile register uint32_t __R31;
+
+    void main(void)
+    {{"{"}}
+      CT_CFG.SYSCFG_bit.STANDBY_INIT = 0x0;
+
+      uint32_t pr1_pru1_gpo17 = 0x1 << 17;
+      uint32_t pr1_pru1_gpo18 = 0x1 << 18;
+
+      while (1)
+      {{"{"}}
+        __R30 |= pr1_pru1_gpo17;
+        __R30 &= ~(pr1_pru1_gpo18);
+
+        __delay_cycles(100000000); /* 500ms @ 200MHz */
+
+        __R30 |= pr1_pru1_gpo18;
+        __R30 &= ~(pr1_pru1_gpo17);
+
+        __delay_cycles(100000000); /* 500ms @ 200MHz */
+      }
+    }
+  </code>
+</pre>
+
+              <h2 id="not-default">The signal I need is not the default, now what?</h2>
+
+              <h3>What is MUXMODE?</h3>
+
+              So in several tables referenced above, you will notice that there are many signals that map to the same ball, and they are listed under "MUXMODE".  More details
+
+              <h3>How do Choose Which Signal is used on which pad / ball?</h3>
+
+              First, through out much of this document, the term ball has been used to indicate the external connection point of a signal from the AM5729 chip.  That is because, that is the normal nomenclature that is used in much of the literature / documentation available.  However, when we start talking about how to configure which internal signal to map to each ball, the Technical Reference Manual refers to the controlling registers as pad configuration registers.  So, in this section pad will be used, but it means the same as ball.
+
+              So, the general, but not actually very helpful answer to "how do I select which internal signal maps to an output pad / ball?" is: you set the muxmode bits (lowest 4 bits) of a pad control register.  While ultimately that is the answer, setting the muxmode bits is not straight forward.
+
+              <h4>Pad Configuration Registers</h4>
+
+              AM572x Sitara Processors Technical Reference Manual figure 18.4.6 defines the configuration register that most pads use.
+
+              <img src="assets/images/Screen_Shot_2020-11-26_at_2.33.24_PM.png" alt="" width="900">
+
+              For every pad, also referred to as ball in most of this document, there is a 32-bit register that will allow you to set the various configuration information shown in figure above.  While not every pad  configuration register has all of  these setting, the vast majority do.
+
+              AM572x Sitara Processors Technical Reference Manual table 18-28 actually lists all of the pad control registers.  They are named CTRL_CORE_PAD_* and the memory addresses of these registers includes 282 32-bit registers.  7 of these register addresses are marked as reserved, so that give us 275 named registers to control 15 possible muxmodes for each.  Now, most pads (balls) do not use all 15 muxmodes to select the internal signal to be used for that pad, but many of the registers do us most of the 15 possible selections.
+
+              It is also the case that not every pad configuration register allows the setting of all the configuration variables showen in Figure 18-4.
+
+              This is a small snipped of what Table 18-28 from AM572x Sitara Processors Technical Reference Manual provides for each pad control register.
+
+              Table 18-28. CTRL_MODULE_CORE Registers Mapping Summary
+
+              <img src="assets/images/Screen_Shot_2020-12-09_at_8.42.26_AM.png" alt="" width="900">
+
+              <h3>More Code...  Solutions For Setting Muxmode</h3>
+
+              In methods 5 and Method 6 for flashing the LED, the same approach used in Methods 2 and Method 3 is used.  However, we need to set the muxmode before we start flashing the LED.
+
+              Since we know the address of the pad configuration registers, we can just write to that memory address (one way or another) to configure the muxmode of the pin.
+
+              In Method 5, just as with Method 2, writing to memory from C code running on the main ARM processor, under Linux control, will require mmap and privileged access.  However, in Method 6 which runs on PRU, we can easily write to the pad configuration registers to set the muxmode.
+
+              <h3>Blinking LED Method 5 - mmap CRTL_CORE_PAD registers</h3>
+
+<pre>
+  <code>
+    #include &lt;stdio.h>
+    #include &lt;stdlib.h>
+    #include &lt;unistd.h>
+    #include &lt;sys/mman.h>
+    #include &lt;stdint.h>
+    #include &lt;fcntl.h>
+
+    // Just hardcode the addresses of the two GPIO registers we need.
+    // Could clearly build a nice headerfile for getting to
+    // all gpio banks and registers.
+
+    // program uses: gpio4_25
+
+    static const uint32_t k_gpio4ModuleAddr = 0x48059000;
+    static const uint32_t k_gpioModuleSize = 408;
+
+    static const uint32_t k_clearDataOutOffset = 0x0190 / 4;
+    static const uint32_t k_setDataOutOffset = 0x0194 / 4;
+
+    static const uint32_t k_gpioPin25 = (0x1 << 25);
+
+    // Also need to hardcode the address of the CTRL_CORE_PAD register
+
+    static const uint32_t k_ctrlCorePadAddr = 0x4A002000;
+    static const uint32_t k_ctrlCorePadSize = 0x1888;;
+
+    static const uint32_t k_gpio4_24Offset = 0x15AC / 4;
+
+    static const uint32_t k_mode14 = 0x000E;
+
+    int main(int argc, char* argv[])
+    {{"{"}}
+      int memoryhandle;
+
+      volatile unsigned int *gpio4Module = NULL;
+      volatile unsigned int *clearDataOut = NULL;
+      volatile unsigned int *setDataOut = NULL;
+
+      volatile unsigned int *ctrlCorePad = NULL;
+      volatile unsigned int *ctrlCorePadGpio4_24 = NULL;
+
+      memoryhandle = open("/dev/mem", O_RDWR);
+
+      if (memoryhandle < 0)
+      {{"{"}}
+        printf("Could not open /dev/mem\n");
+        exit(1);
+      }
+
+      //  Memory map the GPIO4 registers
+      gpio4Module = mmap(0, k_gpioModuleSize,
+          PROT_WRITE, MAP_SHARED,
+          memoryhandle, k_gpio4ModuleAddr);
+
+      clearDataOut = gpio4Module + k_clearDataOutOffset;
+      setDataOut = gpio4Module + k_setDataOutOffset;
+
+      if (gpio4Module == MAP_FAILED)
+      {{"{"}}
+        printf("Could not memory map the gpio clear and set data registers\n");
+        exit(1);
+      }
+
+      //  Memory map the CTRL_CORE_PAD registers
+
+      ctrlCorePad = mmap(0, k_ctrlCorePadSize,
+          PROT_WRITE, MAP_SHARED,
+          memoryhandle, k_ctrlCorePadAddr);
+
+      ctrlCorePadGpio4_24 = ctrlCorePad + k_gpio4_24Offset;
+
+      if (ctrlCorePad == MAP_FAILED)
+      {{"{"}}
+        printf("Could not memory map the ctrl_core_pad gpio4_24 register\n");
+        exit(1);
+      }
+
+      uint32_t defaultMuxMode = (*ctrlCorePadGpio4_24);
+      (*ctrlCorePadGpio4_24) = k_mode14;
+
+      for (int i=0; i<5; i++)
+      {{"{"}}
+        (*setDataOut) = k_gpioPin25;
+        usleep(500000);
+
+        (*clearDataOut) = k_gpioPin25;
+
+        usleep(500000);
+      }
+
+      (*ctrlCorePadGpio4_24) = defaultMuxMode;
+    }
+  </code>
+</pre>
+
+              <h3>Blinking LED Method 6 - PRU Enhanced GPIO</h3>
+
+              Method 6 uses two PRU Enhanced GPIO outputs. One which is the not the default muxmode for ball D5, which is connected to the BB AI header P8.14 and a second that is default muxmode for ball B4 (connected to P8.16).
+
+<pre>
+  <code>
+    #include &lt;stdint.h>
+    #include &lt;stdio.h>
+    #include &lt;pru_cfg.h>
+    #include "resource_table_empty.h"
+
+    // Uses LEDs connected to:
+    // P8.14 - pr1_pru1_gpo9 NOT default muxmode for ball D5
+    // P8.16 - pr1_pru1_gpo18 default muxmode ball B4
+
+    volatile register uint32_t __R30;
+    volatile register uint32_t __R31;
+
+    void main(void)
+    {{"{"}}
+      CT_CFG.SYSCFG_bit.STANDBY_INIT = 0x0;
+
+      uint32_t pr1_pru1_gpo9 = 0x1 << 9;
+      uint32_t pr1_pru1_gpo18 = 0x1 << 18;
+
+      uint32_t *ctrl_core_pad_vin2a_d12 = (uint32_t *)0x4A003598;
+      uint32_t muxmode_13 = 0x0000000D;
+      uint32_t muxmode_default = 0x0000000E;
+      uint32_t clear_muxmode = 0xFFFFFFF0;
+
+      int i;
+
+      while (1)
+      {{"{"}}
+        for (i=0; i<4; i++)
+        {{"{"}}
+          __R30 |= pr1_pru1_gpo9;
+          __R30 &= ~(pr1_pru1_gpo18);
+
+          __delay_cycles(100000000); /* 500ms @ 200MHz */
+
+          __R30 |= pr1_pru1_gpo18;
+          __R30 &= ~(pr1_pru1_gpo9);
+
+          __delay_cycles(100000000); /* 500ms @ 200MHz */
+        }
+
+        if (((*ctrl_core_pad_vin2a_d12) & muxmode_13) != muxmode_13)
+        {{"{"}}
+          (*ctrl_core_pad_vin2a_d12) = ((*ctrl_core_pad_vin2a_d12) & clear_muxmode) | muxmode_13;
+        }
+        else
+        {{"{"}}
+          (*ctrl_core_pad_vin2a_d12) = ((*ctrl_core_pad_vin2a_d12) & clear_muxmode) | muxmode_default;
+        }
+      }
+    }
+  </code>
+</pre>
+
+              <h2 id="device-tree">Using Linux Device Trees To Change Default Muxmode</h2>
+
+              Have not actually go this to work yet.  More work here.
+
+              So, we  have now explored 2 ways to change the muxmode from code, but there is also a way to set the muxmode for each pin at boot time using Linux device trees.
+
+              The device tree source for Beagle Bone AI (and others) is located here
+
+              <ul>
+                <li><a href="https://github.com/beagleboard/BeagleBoard-DeviceTrees">https://github.com/beagleboard/BeagleBoard-DeviceTrees</a></li>
+              </ul>
+
+              Specifically, these these Device Tree Source Include files, define the base functionality for specifying pad configuration in device trees / device tree overlays.
+
+              am572X-bone-pins.h defines a macro for each P8/P9 header pin that can be used to specify the mode for the am572x pad it is connected to.
+
+              <ul>
+                <li><a href="https://github.com/beagleboard/BeagleBoard-DeviceTrees">https://github.com/beagleboard/BeagleBoard-DeviceTrees</a></li>
+                <li><a href="https://github.com/beagleboard/BeagleBoard-DeviceTrees/blob/v4.19.x-ti-overlays/include/dt-bindings/board/am572x-bone-pins.h">https://github.com/beagleboard/BeagleBoard-DeviceTrees/blob/v4.19.x-ti-overlays/include/dt-bindings/board/am572x-bone-pins.h</a></li>
+              </ul>
+
+<pre>
+  <code>
+    #define P8_03(mode) DRA7XX_CORE_IOPAD(0x379C, mode)  /* AB8: mmc3_dat6 */
+    #define P8_04(mode) DRA7XX_CORE_IOPAD(0x37A0, mode)  /* AB5: mmc3_dat7 */
+    #define P8_05(mode) DRA7XX_CORE_IOPAD(0x378C, mode)  /* AC9: mmc3_dat2 */
+    #define P8_06(mode) DRA7XX_CORE_IOPAD(0x3790, mode)  /* AC3: mmc3_dat3 */
+    #define P8_07(mode) DRA7XX_CORE_IOPAD(0x36EC, mode)  /* G14: mcasp1_axr14 */
+    #define P8_08(mode) DRA7XX_CORE_IOPAD(0x36F0, mode)  /* F14: mcasp1_axr15 */
+    #define P8_09(mode) DRA7XX_CORE_IOPAD(0x3698, mode)  /* E17: xref_clk1 */
+    #define P8_10(mode) DRA7XX_CORE_IOPAD(0x36E8, mode)  /* A13: mcasp1_axr13 */
+    #define P8_11(mode) DRA7XX_CORE_IOPAD(0x3510, mode)  /* AH4: vin1a_d7 */
+    #define P8_12(mode) DRA7XX_CORE_IOPAD(0x350C, mode)  /* AG6: vin1a_d6 */
+    #define P8_13(mode) DRA7XX_CORE_IOPAD(0x3590, mode)  /* D3: vin2a_d10 */
+  </code>
+</pre>
+
+              dra.h defines various macros that can be used (and combined) to specify the mode parameter to the macros from am572X-bone-pins.h
+
+              <ul>
+                <li><a href="https://github.com/beagleboard/BeagleBoard-DeviceTrees/blob/v4.19.x-ti-overlays/include/dt-bindings/pinctrl/dra.h">https://github.com/beagleboard/BeagleBoard-DeviceTrees/blob/v4.19.x-ti-overlays/include/dt-bindings/pinctrl/dra.h)</a></li>
+              </ul>
+<pre>
+  <code>
+    /* DRA7 mux mode options for each pin. See TRM for options */
+    #define MUX_MODE0	0x0
+    #define MUX_MODE1	0x1
+    #define MUX_MODE2	0x2
+    #define MUX_MODE3	0x3
+    #define MUX_MODE4	0x4
+    #define MUX_MODE5	0x5
+    #define MUX_MODE6	0x6
+    #define MUX_MODE7	0x7
+    #define MUX_MODE8	0x8
+    #define MUX_MODE9	0x9
+    #define MUX_MODE10	0xa
+    #define MUX_MODE11	0xb
+    #define MUX_MODE12	0xc
+    #define MUX_MODE13	0xd
+    #define MUX_MODE14	0xe
+    #define MUX_MODE15	0xf
+
+    ---
+
+    #define MODE_SELECT		(1 << 8)
+
+    #define PULL_ENA		(0 << 16)
+    #define PULL_DIS		(1 << 16)
+    #define PULL_UP			(1 << 17)
+    #define INPUT_EN		(1 << 18)
+    #define SLEWCONTROL		(1 << 19)
+    #define WAKEUP_EN		(1 << 24)
+    #define WAKEUP_EVENT		(1 << 25)
+
+    /* Active pin states */
+    #define PIN_OUTPUT		(0 | PULL_DIS)
+    #define PIN_OUTPUT_PULLUP	(PULL_UP)
+    #define PIN_OUTPUT_PULLDOWN	(0)
+    #define PIN_INPUT		(INPUT_EN | PULL_DIS)
+    #define PIN_INPUT_SLEW		(INPUT_EN | SLEWCONTROL)
+    #define PIN_INPUT_PULLUP	(PULL_ENA | INPUT_EN | PULL_UP)
+    #define PIN_INPUT_PULLDOWN	(PULL_ENA | INPUT_EN)
+
+    /*
+    * Macro to allow using the absolute physical address instead of the
+    * padconf registers instead of the offset from padconf base.
+    */
+    #define DRA7XX_CORE_IOPAD(pa, val)	(((pa) & 0xffff) - 0x3400) (val)
+  </code>
+</pre>
+
+              Next, am572x-bone-common-univ.dtsi, sets up all the various uses of the previous macros
+              <ul>
+                <li><a href="https://github.com/beagleboard/BeagleBoard-DeviceTrees/blob/v4.19.x-ti-overlays/src/arm/am572x-bone-common-univ.dtsi">https://github.com/beagleboard/BeagleBoard-DeviceTrees/blob/v4.19.x-ti-overlays/src/arm/am572x-bone-common-univ.dtsi)</a></li>
+              </ul>
+<pre>
+  <code>
+    /* P8_03  (ball AB8) gpio1_24 */
+    P8_03_default_pin: pinmux_P8_03_default_pin {{"{"}} pinctrl-single,pins = &lt;
+     P8_03( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE14) >; };
+    P8_03_gpio_pin: pinmux_P8_03_gpio_pin {{"{"}}  pinctrl-single,pins = &lt;
+      P8_03( PIN_OUTPUT | INPUT_EN | MUX_MODE14) >; };
+    P8_03_gpio_pu_pin: pinmux_P8_03_gpio_pu_pin {{"{"}}  pinctrl-single,pins = &lt;
+      P8_03( PIN_OUTPUT_PULLUP | INPUT_EN | MUX_MODE14) >; };
+    P8_03_gpio_pd_pin: pinmux_P8_03_gpio_pd_pin {{"{"}}  pinctrl-single,pins = &lt;
+      P8_03( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE14) >; };
+    P8_03_pruin_pin: pinmux_P8_03_pruin_pin {{"{"}}  pinctrl-single,pins = &lt;
+      P8_03( PIN_INPUT | MUX_MODE12) >; };		/* mmc3_dat6.pr2_pru0_gpi10 */
+    P8_03_pruout_pin: pinmux_P8_03_pruout_pin {{"{"}}  pinctrl-single,pins = &lt;
+      P8_03( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE13) >; };
+    P8_03_mmc_pin: pinmux_P8_03_mmc_pin {{"{"}}  pinctrl-single,pins = &lt;
+      P8_03( PIN_INPUT_PULLUP | MUX_MODE0) >; };		/* mmc3_dat6.mmc3_dat6 */
+
+    /* P8_04  (ball AB5) gpio1_25 */
+    P8_04_default_pin: pinmux_P8_04_default_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE14) >; };
+    P8_04_gpio_pin: pinmux_P8_04_gpio_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_OUTPUT | INPUT_EN | MUX_MODE14) >; };
+    P8_04_gpio_pu_pin: pinmux_P8_04_gpio_pu_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_OUTPUT_PULLUP | INPUT_EN | MUX_MODE14) >; };
+    P8_04_gpio_pd_pin: pinmux_P8_04_gpio_pd_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE14) >; };
+    P8_04_pruin_pin: pinmux_P8_04_pruin_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_INPUT | MUX_MODE12) >; };		/* mmc3_dat7.pr2_pru0_gpi11 */
+    P8_04_pruout_pin: pinmux_P8_04_pruout_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE13) >; };
+    P8_04_ecap_pwm_pin: pinmux_P8_04_ecap_pwm_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_OUTPUT_PULLDOWN | INPUT_EN | MUX_MODE10) >; };
+    P8_04_mmc_pin: pinmux_P8_04_mmc_pin {{"{"}}  pinctrl-single,pins = &lt;
+    P8_04( PIN_INPUT_PULLUP | MUX_MODE0) >; };
+
+    ---
+
+    P8_03_pinmux {{"{"}}
+      compatible = "bone-pinmux-helper";
+      status = "okay";
+      pinctrl-names = "default", "gpio", "gpio_pu", "gpio_pd", "pruin", "pruout";
+      pinctrl-0 = &lt;&amp;P8_03_default_pin>;
+      pinctrl-1 = &lt;&amp;P8_03_gpio_pin>;
+      pinctrl-2 = &lt;&amp;P8_03_gpio_pu_pin>;
+      pinctrl-3 = &lt;&amp;P8_03_gpio_pd_pin>;
+      pinctrl-4 = &lt;&amp;P8_03_pruin_pin>;
+      pinctrl-5 = &lt;&amp;P8_03_pruout_pin>;
+    };
+
+    P8_04_pinmux {{"{"}}
+      compatible = "bone-pinmux-helper";
+      status = "okay";
+      pinctrl-names = "default", "gpio", "gpio_pu", "gpio_pd", "ecap_pwm", "pruin", "pruout";
+      pinctrl-0 = &lt;&amp;P8_04_default_pin>;
+      pinctrl-1 = &lt;&amp;P8_04_gpio_pin>;
+      pinctrl-2 = &lt;&amp;P8_04_gpio_pu_pin>;
+      pinctrl-3 = &lt;&amp;P8_04_gpio_pd_pin>;
+      pinctrl-4 = &lt;&amp;P8_04_ecap_pwm_pin>;
+      pinctrl-5 = &lt;&amp;P8_04_pruin_pin>;
+      pinctrl-6 = &lt;&amp;&P8_04_pruout_pin>;
+    };
+  </code>
+</pre>
             </div>
         </div>
     </mat-sidenav-content>

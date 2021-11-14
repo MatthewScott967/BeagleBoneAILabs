@@ -45,6 +45,7 @@ export class PinInfoTableComponent implements AfterViewInit, OnInit
     displayQueryResults(pinInfoItems: PinInfoItem[]) : void
     {
         this.dataSource.data = pinInfoItems;  
+        this.paginator.firstPage();
         this.paginator._changePageSize(this.paginator.pageSize); 
     }
 }

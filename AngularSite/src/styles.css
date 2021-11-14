@@ -1,11 +1,18 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 body {
-    font-family: Roboto, Arial, sans-serif;
+    font-family: Verdana, Roboto, Arial, sans-serif;
+    font-size: 14pt;
+    line-height: 20pt;
     margin: 0;
     padding: 0px;
   }
   
+  p {
+    margin-top: 14px ;
+    margin-bottom: 6px ;
+  }
+
   .version-info {
     font-size: 8pt;
     float: right;

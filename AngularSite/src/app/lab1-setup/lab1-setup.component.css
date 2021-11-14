@@ -12,11 +12,11 @@
   flex: 1 1 auto;
 }
 
-.lab1-nav-panel {  
+.lab1-nav-panel {
   position: sticky;
   top: 0;
   height: calc(100vh - 56px);
-  width: 200px;
+  width: 300px;
   overflow: auto;
 }
 

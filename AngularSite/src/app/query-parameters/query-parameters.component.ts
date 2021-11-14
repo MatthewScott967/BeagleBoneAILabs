@@ -30,6 +30,7 @@ export class QueryParametersComponent implements OnInit, AfterViewInit
     signalControl = new FormControl();
     signalOptions: string[] = [];
     filteredSignalOptions: Observable<string[]>;
+    emptyPin: PinInfoItem;
 
     public selectedPinInTable: PinInfoItem;
 
@@ -91,6 +92,10 @@ export class QueryParametersComponent implements OnInit, AfterViewInit
 
     pinSearch(queryPin: string): void 
     {
+        this.selectedPinInTable = this.emptyPin;
+        this.queryParameter = queryPin;
+        this.signalControl.reset();
+
         if (!queryPin)
         {
             this.getAllPinInfoItems();
@@ -120,6 +125,10 @@ export class QueryParametersComponent implements OnInit, AfterViewInit
 
     signalSearch(querySignal: string): void 
     {
+        this.selectedPinInTable = this.emptyPin;
+        this.queryParameter = querySignal;
+        this.pinControl.reset();
+
         if (!querySignal)
         {
             this.getAllPinInfoItems();

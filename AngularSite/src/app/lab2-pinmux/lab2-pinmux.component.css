@@ -6,20 +6,20 @@
     margin-top: 64px;
     overflow-y: visible;
   }
-  
+
   .lab2-main-container {
     display: flex;
     flex: 1 1 auto;
   }
-  
-  .lab2-nav-panel {  
+
+  .lab2-nav-panel {
     position: sticky;
     top: 0;
     height: calc(100vh - 56px);
-    width: 200px;
+    min-width: 300px;
     overflow: auto;
   }
-  
+
   .lab2-main-content {
     display: flex;
     flex-direction: column;
@@ -27,3 +27,12 @@
     padding-left: 20px;
     padding-right: 20px;
   }
+
+pre code {
+  font-size: 11pt;
+  line-height: 13pt;
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
